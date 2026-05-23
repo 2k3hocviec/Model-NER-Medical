@@ -1,0 +1,425 @@
+[
+  {
+    "text": "Tôi bị đau đầu dữ dội và sốt cao từ hôm qua",
+    "entities": [
+      { "start": 7, "end": 15, "label": "SYMPTOM", "text": "đau đầu" },
+      { "start": 25, "end": 33, "label": "SYMPTOM", "text": "sốt cao" }
+    ]
+  },
+  {
+    "text": "Mấy ngày nay tôi bị sổ mũi, hắt hơi liên tục và đau họng",
+    "entities": [
+      { "start": 20, "end": 26, "label": "SYMPTOM", "text": "sổ mũi" },
+      { "start": 28, "end": 36, "label": "SYMPTOM", "text": "hắt hơi" },
+      { "start": 49, "end": 57, "label": "SYMPTOM", "text": "đau họng" }
+    ]
+  },
+  {
+    "text": "Tôi bị đau bụng quặn từng cơn kèm theo buồn nôn",
+    "entities": [
+      { "start": 7, "end": 15, "label": "SYMPTOM", "text": "đau bụng" },
+      { "start": 39, "end": 48, "label": "SYMPTOM", "text": "buồn nôn" }
+    ]
+  },
+  {
+    "text": "Ngực tôi đau tức, khó thở và tim đập nhanh",
+    "entities": [
+      { "start": 0, "end": 12, "label": "SYMPTOM", "text": "Ngực tôi đau" },
+      { "start": 17, "end": 24, "label": "SYMPTOM", "text": "khó thở" },
+      { "start": 29, "end": 42, "label": "SYMPTOM", "text": "tim đập nhanh" }
+    ]
+  },
+  {
+    "text": "Tôi bị đau lưng dưới, tê bì chân tay và mỏi cơ",
+    "entities": [
+      { "start": 7, "end": 18, "label": "SYMPTOM", "text": "đau lưng dưới" },
+      { "start": 20, "end": 31, "label": "SYMPTOM", "text": "tê bì chân tay" },
+      { "start": 36, "end": 43, "label": "SYMPTOM", "text": "mỏi cơ" }
+    ]
+  },
+  {
+    "text": "Da tôi bị nổi mẩn đỏ, ngứa ngáy khắp người",
+    "entities": [
+      { "start": 10, "end": 22, "label": "SYMPTOM", "text": "nổi mẩn đỏ" },
+      { "start": 24, "end": 33, "label": "SYMPTOM", "text": "ngứa ngáy" }
+    ]
+  },
+  {
+    "text": "Mắt tôi đỏ và cộm, nhìn mờ, chảy nước mắt nhiều",
+    "entities": [
+      { "start": 0, "end": 12, "label": "SYMPTOM", "text": "Mắt tôi đỏ" },
+      { "start": 18, "end": 25, "label": "SYMPTOM", "text": "nhìn mờ" },
+      { "start": 27, "end": 40, "label": "SYMPTOM", "text": "chảy nước mắt" }
+    ]
+  },
+  {
+    "text": "Tôi hay bị đau nửa đầu, buồn nôn khi ra nắng",
+    "entities": [
+      { "start": 11, "end": 22, "label": "SYMPTOM", "text": "đau nửa đầu" },
+      { "start": 24, "end": 33, "label": "SYMPTOM", "text": "buồn nôn" }
+    ]
+  },
+  {
+    "text": "Răng tôi bị đau nhức, sưng nướu và chảy máu",
+    "entities": [
+      { "start": 12, "end": 21, "label": "SYMPTOM", "text": "đau nhức" },
+      { "start": 23, "end": 32, "label": "SYMPTOM", "text": "sưng nướu" },
+      { "start": 37, "end": 45, "label": "SYMPTOM", "text": "chảy máu" }
+    ]
+  },
+  {
+    "text": "Tôi bị tiêu chảy liên tục, đau quặn bụng và mất nước",
+    "entities": [
+      { "start": 7, "end": 17, "label": "SYMPTOM", "text": "tiêu chảy" },
+      { "start": 27, "end": 40, "label": "SYMPTOM", "text": "đau quặn bụng" },
+      { "start": 44, "end": 52, "label": "SYMPTOM", "text": "mất nước" }
+    ]
+  },
+  {
+    "text": "Tôi khó thở về đêm, ho khan nhiều và tức ngực",
+    "entities": [
+      { "start": 4, "end": 11, "label": "SYMPTOM", "text": "khó thở" },
+      { "start": 20, "end": 27, "label": "SYMPTOM", "text": "ho khan" },
+      { "start": 37, "end": 45, "label": "SYMPTOM", "text": "tức ngực" }
+    ]
+  },
+
+  {
+    "text": "Tôi bị ho có đờm, đặc biệt vào buổi sáng",
+    "entities": [
+      { "start": 7, "end": 18, "label": "SYMPTOM", "text": "ho có đờm" }
+    ]
+  },
+  {
+    "text": "Mấy hôm nay tôi ho không ngừng và có đờm vàng",
+    "entities": [
+      { "start": 11, "end": 27, "label": "SYMPTOM", "text": "ho không ngừng" },
+      { "start": 32, "end": 42, "label": "SYMPTOM", "text": "đờm vàng" }
+    ]
+  },
+  {
+    "text": "Tôi ho sặc nước, ngứa cthroat và hơi sốt",
+    "entities": [
+      { "start": 4, "end": 14, "label": "SYMPTOM", "text": "ho sặc nước" },
+      { "start": 23, "end": 30, "label": "SYMPTOM", "text": "hơi sốt" }
+    ]
+  },
+  {
+    "text": "Ho có máu trong đờm, sốt cao và mệt mỏi",
+    "entities": [
+      { "start": 0, "end": 11, "label": "SYMPTOM", "text": "ho có máu" },
+      { "start": 25, "end": 33, "label": "SYMPTOM", "text": "sốt cao" },
+      { "start": 38, "end": 45, "label": "SYMPTOM", "text": "mệt mỏi" }
+    ]
+  },
+  {
+    "text": "Tôi bị sốt cao, ho liên tục và đau họng",
+    "entities": [
+      { "start": 7, "end": 15, "label": "SYMPTOM", "text": "sốt cao" },
+      { "start": 17, "end": 28, "label": "SYMPTOM", "text": "ho liên tục" },
+      { "start": 33, "end": 41, "label": "SYMPTOM", "text": "đau họng" }
+    ]
+  },
+  {
+    "text": "Tôi ho khan không có đờm, hắt hơi liên tục",
+    "entities": [
+      {
+        "start": 4,
+        "end": 20,
+        "label": "SYMPTOM",
+        "text": "ho khan không có đờm"
+      },
+      { "start": 22, "end": 34, "label": "SYMPTOM", "text": "hắt hơi liên tục" }
+    ]
+  },
+  {
+    "text": "Ho có chút máu, sốt nhẹ và cảm thấy yếu",
+    "entities": [
+      { "start": 0, "end": 10, "label": "SYMPTOM", "text": "ho có máu" },
+      { "start": 12, "end": 20, "label": "SYMPTOM", "text": "sốt nhẹ" },
+      { "start": 28, "end": 38, "label": "SYMPTOM", "text": "cảm thấy yếu" }
+    ]
+  },
+  {
+    "text": "Tôi bị ho về đêm, đặc biệt là khi nằm xuống",
+    "entities": [
+      { "start": 7, "end": 16, "label": "SYMPTOM", "text": "ho về đêm" }
+    ]
+  },
+  {
+    "text": "Tôi ho co thắt, khó thở khi ho mạnh",
+    "entities": [
+      { "start": 4, "end": 15, "label": "SYMPTOM", "text": "ho co thắt" },
+      { "start": 17, "end": 24, "label": "SYMPTOM", "text": "khó thở" }
+    ]
+  },
+  {
+    "text": "Mấy ngày nay tôi ho, sổ mũi và đau xương",
+    "entities": [
+      { "start": 11, "end": 13, "label": "SYMPTOM", "text": "ho" },
+      { "start": 15, "end": 21, "label": "SYMPTOM", "text": "sổ mũi" },
+      { "start": 26, "end": 35, "label": "SYMPTOM", "text": "đau xương" }
+    ]
+  },
+  {
+    "text": "Tôi bị ho kéo dài hơn 2 tuần, cần khám bác sĩ",
+    "entities": [
+      { "start": 7, "end": 18, "label": "SYMPTOM", "text": "ho kéo dài" }
+    ]
+  },
+  {
+    "text": "Đờm vàng, đặc, khó ho ra và hay khạc nhổ",
+    "entities": [
+      { "start": 0, "end": 7, "label": "SYMPTOM", "text": "đờm vàng" },
+      { "start": 9, "end": 13, "label": "SYMPTOM", "text": "đặc" },
+      { "start": 20, "end": 30, "label": "SYMPTOM", "text": "khó ho ra" }
+    ]
+  },
+  {
+    "text": "Tôi sốt cao, ho có đờm và cảm thấy lạnh",
+    "entities": [
+      { "start": 4, "end": 12, "label": "SYMPTOM", "text": "sốt cao" },
+      { "start": 14, "end": 25, "label": "SYMPTOM", "text": "ho có đờm" },
+      { "start": 30, "end": 43, "label": "SYMPTOM", "text": "cảm thấy lạnh" }
+    ]
+  },
+  {
+    "text": "Ho có sridium, đau ngực khi ho, chóng mặt",
+    "entities": [
+      { "start": 0, "end": 18, "label": "SYMPTOM", "text": "ho có sridium" },
+      { "start": 20, "end": 31, "label": "SYMPTOM", "text": "đau ngực khi ho" },
+      { "start": 33, "end": 42, "label": "SYMPTOM", "text": "chóng mặt" }
+    ]
+  },
+  {
+    "text": "Tôi bị ho từ 3 tuần trước, đêm nào cũng ho",
+    "entities": [
+      { "start": 7, "end": 16, "label": "SYMPTOM", "text": "ho từ 3 tuần" }
+    ]
+  },
+  {
+    "text": "Ho liên tục, cơ thể mệt mỏi và vã mồ hôi",
+    "entities": [
+      { "start": 0, "end": 10, "label": "SYMPTOM", "text": "ho liên tục" },
+      { "start": 12, "end": 24, "label": "SYMPTOM", "text": "cơ thể mệt mỏi" },
+      { "start": 29, "end": 39, "label": "SYMPTOM", "text": "vã mồ hôi" }
+    ]
+  },
+  {
+    "text": "Tai tôi bị ù, nghe kém và đau trong tai",
+    "entities": [
+      { "start": 11, "end": 13, "label": "SYMPTOM", "text": "ù" },
+      { "start": 15, "end": 23, "label": "SYMPTOM", "text": "nghe kém" },
+      { "start": 27, "end": 39, "label": "SYMPTOM", "text": "đau trong tai" }
+    ]
+  },
+  {
+    "text": "Tôi bị chóng mặt, mất thăng bằng và buồn nôn khi đứng dậy",
+    "entities": [
+      { "start": 7, "end": 16, "label": "SYMPTOM", "text": "chóng mặt" },
+      { "start": 18, "end": 31, "label": "SYMPTOM", "text": "mất thăng bằng" },
+      { "start": 36, "end": 45, "label": "SYMPTOM", "text": "buồn nôn" }
+    ]
+  },
+  {
+    "text": "Khớp gối tôi sưng đau, cứng khớp vào buổi sáng",
+    "entities": [
+      { "start": 13, "end": 22, "label": "SYMPTOM", "text": "sưng đau" },
+      { "start": 24, "end": 33, "label": "SYMPTOM", "text": "cứng khớp" }
+    ]
+  },
+  {
+    "text": "Tôi bị mất ngủ liên tục, lo âu và hay cáu gắt",
+    "entities": [
+      { "start": 7, "end": 15, "label": "SYMPTOM", "text": "mất ngủ" },
+      { "start": 26, "end": 31, "label": "SYMPTOM", "text": "lo âu" },
+      { "start": 38, "end": 46, "label": "SYMPTOM", "text": "cáu gắt" }
+    ]
+  },
+  {
+    "text": "Tôi đi tiểu nhiều lần, tiểu buốt và có máu trong nước tiểu",
+    "entities": [
+      {
+        "start": 4,
+        "end": 20,
+        "label": "SYMPTOM",
+        "text": "đi tiểu nhiều lần"
+      },
+      { "start": 22, "end": 31, "label": "SYMPTOM", "text": "tiểu buốt" },
+      {
+        "start": 38,
+        "end": 55,
+        "label": "SYMPTOM",
+        "text": "máu trong nước tiểu"
+      }
+    ]
+  },
+  {
+    "text": "Tôi sụt cân nhanh, hay khát nước và mệt mỏi kéo dài",
+    "entities": [
+      { "start": 4, "end": 14, "label": "SYMPTOM", "text": "sụt cân" },
+      { "start": 20, "end": 30, "label": "SYMPTOM", "text": "khát nước" },
+      { "start": 35, "end": 43, "label": "SYMPTOM", "text": "mệt mỏi" }
+    ]
+  },
+  {
+    "text": "Bụng tôi chướng, đầy hơi và ợ chua sau khi ăn",
+    "entities": [
+      { "start": 10, "end": 16, "label": "SYMPTOM", "text": "chướng" },
+      { "start": 18, "end": 25, "label": "SYMPTOM", "text": "đầy hơi" },
+      { "start": 30, "end": 36, "label": "SYMPTOM", "text": "ợ chua" }
+    ]
+  },
+  {
+    "text": "Tôi bị ho ra máu, sụt cân và đổ mồ hôi đêm",
+    "entities": [
+      { "start": 7, "end": 15, "label": "SYMPTOM", "text": "ho ra máu" },
+      { "start": 17, "end": 23, "label": "SYMPTOM", "text": "sụt cân" },
+      { "start": 28, "end": 42, "label": "SYMPTOM", "text": "đổ mồ hôi đêm" }
+    ]
+  },
+  {
+    "text": "Tóc tôi rụng nhiều, da khô và hay mệt mỏi",
+    "entities": [
+      { "start": 9, "end": 19, "label": "SYMPTOM", "text": "rụng nhiều" },
+      { "start": 21, "end": 26, "label": "SYMPTOM", "text": "da khô" },
+      { "start": 34, "end": 42, "label": "SYMPTOM", "text": "mệt mỏi" }
+    ]
+  },
+  {
+    "text": "Tôi bị đau dạ dày trầm trọng, đặc biệt sau khi ăn",
+    "entities": [
+      { "start": 7, "end": 18, "label": "SYMPTOM", "text": "đau dạ dày" }
+    ]
+  },
+  {
+    "text": "Dạ dày tôi đau âm ỉ, buồn nôn và chướng bụng",
+    "entities": [
+      { "start": 9, "end": 20, "label": "SYMPTOM", "text": "đau âm ỉ" },
+      { "start": 22, "end": 31, "label": "SYMPTOM", "text": "buồn nôn" },
+      { "start": 36, "end": 46, "label": "SYMPTOM", "text": "chướng bụng" }
+    ]
+  },
+  {
+    "text": "Tôi bị đau dạ dày kéo dài, khó tiêu và ợ chua",
+    "entities": [
+      { "start": 7, "end": 18, "label": "SYMPTOM", "text": "đau dạ dày" },
+      { "start": 29, "end": 36, "label": "SYMPTOM", "text": "khó tiêu" },
+      { "start": 41, "end": 47, "label": "SYMPTOM", "text": "ợ chua" }
+    ]
+  },
+  {
+    "text": "Mấy hôm nay tôi hay đau dạ dày, mệt mỏi và sụt cân",
+    "entities": [
+      { "start": 20, "end": 31, "label": "SYMPTOM", "text": "đau dạ dày" },
+      { "start": 33, "end": 41, "label": "SYMPTOM", "text": "mệt mỏi" },
+      { "start": 46, "end": 52, "label": "SYMPTOM", "text": "sụt cân" }
+    ]
+  },
+  {
+    "text": "Tôi bị trĩ",
+    "entities": [{ "start": 7, "end": 10, "label": "SYMPTOM", "text": "trĩ" }]
+  },
+  {
+    "text": "Tôi bị sa búi trĩ",
+    "entities": [
+      { "start": 7, "end": 17, "label": "SYMPTOM", "text": "sa búi trĩ" }
+    ]
+  },
+  {
+    "text": "Tôi bị đau hậu môn khi đi ngoài",
+    "entities": [
+      { "start": 7, "end": 18, "label": "SYMPTOM", "text": "đau hậu môn" }
+    ]
+  },
+  {
+    "text": "Tôi đi ngoài ra máu",
+    "entities": [
+      { "start": 4, "end": 20, "label": "SYMPTOM", "text": "đi ngoài ra máu" }
+    ]
+  },
+  {
+    "text": "Hậu môn tôi bị rát và chảy máu",
+    "entities": [
+      { "start": 15, "end": 18, "label": "SYMPTOM", "text": "rát" },
+      { "start": 22, "end": 30, "label": "SYMPTOM", "text": "chảy máu" }
+    ]
+  },
+  {
+    "text": "bắp chân cảm giác bị tê buốt",
+    "entities": [
+      { "start": 0, "end": 8, "label": "SYMPTOM", "text": "bắp chân" },
+      { "start": 18, "end": 26, "label": "SYMPTOM", "text": "tê buốt" }
+    ]
+  },
+  {
+    "text": "Mấy ngày nay em cứ bị tê bì hai bắp chân như kim châm",
+    "entities": [
+      {
+        "start": 22,
+        "end": 35,
+        "label": "SYMPTOM",
+        "text": "tê bì hai bắp chân"
+      },
+      { "start": 40, "end": 48, "label": "SYMPTOM", "text": "kim châm" }
+    ]
+  },
+  {
+    "text": "Tôi bị đau nhói từ mông lan xuống tận bắp chân trái và thấy chân rất yếu",
+    "entities": [
+      {
+        "start": 7,
+        "end": 43,
+        "label": "SYMPTOM",
+        "text": "đau nhói từ mông lan xuống tận bắp chân"
+      },
+      { "start": 60, "end": 72, "label": "SYMPTOM", "text": "chân rất yếu" }
+    ]
+  },
+  {
+    "text": "Cứ về đêm là chân em lại bị chuột rút dữ dội và căng tức bắp thịt",
+    "entities": [
+      { "start": 28, "end": 37, "label": "SYMPTOM", "text": "chuột rút" },
+      {
+        "start": 48,
+        "end": 65,
+        "label": "SYMPTOM",
+        "text": "căng tức bắp thịt"
+      }
+    ]
+  },
+  {
+    "text": "Ngồi lâu một chỗ là bàn chân bị mất cảm giác, châm chích như kiến bò",
+    "entities": [
+      { "start": 32, "end": 44, "label": "SYMPTOM", "text": "mất cảm giác" },
+      { "start": 46, "end": 56, "label": "SYMPTOM", "text": "châm chích" },
+      { "start": 60, "end": 68, "label": "SYMPTOM", "text": "kiến bò" }
+    ]
+  },
+  {
+    "text": "Đi bộ được một đoạn là hai cẳng chân đau nhức bứt rứt không chịu nổi",
+    "entities": [
+      { "start": 37, "end": 45, "label": "SYMPTOM", "text": "đau nhức" },
+      { "start": 46, "end": 53, "label": "SYMPTOM", "text": "bứt rứt" }
+    ]
+  },
+  {
+    "text": "Nhìn xuống bắp chân thấy nổi nhiều gân xanh và hay bị sưng phù vào buổi tối",
+    "entities": [
+      {
+        "start": 25,
+        "end": 42,
+        "label": "SYMPTOM",
+        "text": "nổi nhiều gân xanh"
+      },
+      { "start": 54, "end": 62, "label": "SYMPTOM", "text": "sưng phù" }
+    ]
+  },
+  {
+    "text": "Gót chân của tôi bị đau buốt khi vừa bước xuống giường vào buổi sáng",
+    "entities": [
+      { "start": 0, "end": 8, "label": "SYMPTOM", "text": "Gót chân" },
+      { "start": 20, "end": 28, "label": "SYMPTOM", "text": "đau buốt" }
+    ]
+  }
+]
