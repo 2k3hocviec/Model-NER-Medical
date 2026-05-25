@@ -16,11 +16,10 @@ from transformers import  ( # type: ignore
     DataCollatorForTokenClassification,
 ) 
 from seqeval.metrics import f1_score # type: ignore
+from specialty_labels import LABEL2ID, ID2LABEL
 
 MODEL_NAME = "vinai/phobert-base"
 OUTPUT_DIR = "./output/medical-ner-model"
-LABEL2ID   = {"O": 0, "B-SYMPTOM": 1, "I-SYMPTOM": 2}
-ID2LABEL   = {v: k for k, v in LABEL2ID.items()}
 
 
 class NERDataset(Dataset):
@@ -61,7 +60,7 @@ def train():
     print("[3/4] Setting up training...")
     training_args = TrainingArguments(
         output_dir=OUTPUT_DIR,
-        num_train_epochs=10,
+        num_train_epochs=40,
         per_device_train_batch_size=4,
         per_device_eval_batch_size=4,
         learning_rate=2e-5,
@@ -101,7 +100,7 @@ def train():
     trainer.save_model(OUTPUT_DIR)
     tokenizer.save_pretrained(OUTPUT_DIR)
     print(f"Done! Model luu tai: {OUTPUT_DIR}")
-    print("Tiep theo chay: python chatbot_demo.py")
+    print("Tiep theo chay: python inference.py hoac python model_api.py")
 
 
 if __name__ == "__main__":

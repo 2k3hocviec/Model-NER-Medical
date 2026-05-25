@@ -5,10 +5,12 @@ Dùng cách thủ công: tokenize từng từ rồi ghép nhãn lại
 
 import json
 import os
+import random
 from transformers import AutoTokenizer # type: ignore
+from specialty_labels import LABEL2ID, validate_specialty_code
 
 TOKENIZER_NAME = "vinai/phobert-base"
-LABEL2ID = {"O": 0, "B-SYMPTOM": 1, "I-SYMPTOM": 2}
+DATASET_PATH = os.getenv("NER_DATASET_PATH", "data/dataset_specialty.json")
 
 
 def tokenize_and_label(sample, tokenizer):
@@ -16,12 +18,23 @@ def tokenize_and_label(sample, tokenizer):
     text = sample["text"]
     entities = sample["entities"]
 
-    # Bước 1: Tạo nhãn ký tự
+    # Buoc 1: Tao nhan ky tu theo chuyen khoa.
     char_labels = ["O"] * len(text)
     for ent in entities:
         s, e = ent["start"], ent["end"]
+        label = ent["label"]
+        if label == "SYMPTOM":
+            raise ValueError(
+                "Dataset van dung label SYMPTOM. Hay chay label_dataset_specialties.py "
+                "va ra soat cac entity REVIEW_REQUIRED truoc khi train."
+            )
+        validate_specialty_code(label)
+        if text[s:e] != ent["text"]:
+            raise ValueError(
+                f"Offset sai cho '{ent['text']}': text[{s}:{e}] = '{text[s:e]}'"
+            )
         for i in range(s, min(e, len(text))):
-            char_labels[i] = "B-SYMPTOM" if i == s else "I-SYMPTOM"
+            char_labels[i] = f"B-{label}" if i == s else f"I-{label}"
 
     # Bước 2: Tách từ ĐÚNG + gán nhãn cho từng từ
     # Dùng regex để tìm vị trí từ chính xác (không dùng .split())
@@ -54,8 +67,8 @@ def tokenize_and_label(sample, tokenizer):
             if j == 0:
                 all_labels.append(label_id)
             else:
-                # subtoken tiếp theo: nếu B thì I, còn lại giữ nguyên
-                all_labels.append(LABEL2ID["I-SYMPTOM"] if w_label == "B-SYMPTOM" else label_id)
+                continuation = f"I-{w_label[2:]}" if w_label.startswith("B-") else w_label
+                all_labels.append(LABEL2ID[continuation])
 
     # Token SEP ở cuối
     all_input_ids.append(sep_id)
@@ -92,6 +105,11 @@ def prepare_dataset(json_path, tokenizer):
             errors += 1
 
     print(f"  Thanh cong: {len(processed)}/{len(raw_data)} (loi: {errors})")
+    if errors:
+        raise ValueError(
+            "Dataset con loi nhan hoac offset. Sua data/dataset_specialty.json "
+            "truoc khi tao train/validation."
+        )
     return processed
 
 
@@ -102,7 +120,8 @@ if __name__ == "__main__":
     print("  OK\n")
 
     print("[2/3] Xu ly dataset...")
-    dataset = prepare_dataset("data/dataset.json", tokenizer)
+    print(f"      Nguon: {DATASET_PATH}")
+    dataset = prepare_dataset(DATASET_PATH, tokenizer)
 
     if len(dataset) == 0:
         print("LOI: Khong co mau nao duoc xu ly! Kiem tra lai dataset.json")
@@ -110,6 +129,7 @@ if __name__ == "__main__":
 
     print("\n[3/3] Luu file...")
     os.makedirs("data", exist_ok=True)
+    random.Random(42).shuffle(dataset)
     split = int(len(dataset) * 0.8)
     train_data, val_data = dataset[:split], dataset[split:]
 

@@ -1,115 +1,86 @@
-"""
-inference.py
-Dùng model đã train để:
-1. Trích xuất triệu chứng từ câu người dùng (NER)
-2. Gợi ý bác sĩ phù hợp (mapping)
+"""Inference helpers for a specialty-aware medical NER model."""
 
-Tích hợp vào chatbot chỉ cần gọi: predict(user_input)
-"""
+from transformers import AutoModelForTokenClassification, AutoTokenizer, pipeline  # type: ignore
 
-from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline # type: ignore
-from symptom_mapping import (
-    format_recommendation, 
-    map_symptoms_to_doctors,
-    get_doctors_for_specialty,
+from specialty_labels import (
+    SPECIALTY_CATALOG,
+    specialty_payload,
 )
 
+
 MODEL_PATH = "./output/medical-ner-model"
+MIN_CONFIDENCE = 0.7
 
 
 def load_ner_pipeline(model_path: str = MODEL_PATH):
-    """Load model NER đã train"""
+    """Load the trained token classification model once at application start."""
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForTokenClassification.from_pretrained(model_path)
-
-    ner_pipeline = pipeline(
+    return pipeline(
         "ner",
         model=model,
         tokenizer=tokenizer,
-        aggregation_strategy="simple",  # Gộp B- và I- thành 1 entity
+        aggregation_strategy="simple",
     )
-    return ner_pipeline
+
+
+def _specialty_code(entity_group: str, symptom: str) -> str | None:
+    if entity_group in SPECIALTY_CATALOG:
+        return entity_group
+    return None
+
+
+def extract_specialty_symptoms(
+    text: str, ner_pipeline, minimum_confidence: float = MIN_CONFIDENCE
+) -> list[dict]:
+    """Return each detected symptom together with the model specialty label."""
+    results = []
+    for entity in ner_pipeline(text):
+        score = float(entity["score"])
+        symptom = entity["word"].strip()
+        code = _specialty_code(entity["entity_group"], symptom)
+        if code and score >= minimum_confidence:
+            results.append(
+                {
+                    "name": symptom,
+                    "confidence": score,
+                    "specialty": specialty_payload(code),
+                }
+            )
+    return results
 
 
 def extract_symptoms(text: str, ner_pipeline) -> list[str]:
-    """
-    Trích xuất triệu chứng từ văn bản đầu vào
-    """
-    entities = ner_pipeline(text)
-    symptoms = []
-    for ent in entities:
-        if ent["entity_group"] == "SYMPTOM" and ent["score"] > 0.3:
-            symptoms.append(ent["word"].strip())
-    return symptoms
+    """Compatibility helper for callers that only need symptom strings."""
+    return [item["name"] for item in extract_specialty_symptoms(text, ner_pipeline)]
 
 
 def predict(user_input: str, ner_pipeline) -> dict:
-    """
-    Hàm chính để tích hợp vào chatbot
-    
-    Input:  chuỗi văn bản từ người dùng
-    Output: dict gồm symptoms, doctors và recommendations
-    """
-    symptoms = extract_symptoms(user_input, ner_pipeline)
-    
-    if not symptoms:
-        return {
-            "symptoms": [],
-            "doctors": {},
-            "message": (
-                "Xin lỗi, tôi chưa nhận ra triệu chứng cụ thể trong câu bạn mô tả. "
-                "Bạn thử mô tả rõ hơn nhé? Ví dụ: đau đầu, sốt, ho, đau bụng..."
-            )
-        }
+    detected = extract_specialty_symptoms(user_input, ner_pipeline)
+    specialties: dict[str, dict] = {}
 
-    # Lấy mapping chuyên khoa từ triệu chứng
-    specialties = map_symptoms_to_doctors(symptoms)
-    
-    # Tạo dict bác sĩ cụ thể theo chuyên khoa
-    doctors_with_specialists = {}
-    for specialty in specialties.keys():
-        doctors_with_specialists[specialty] = get_doctors_for_specialty(specialty)
-    
-    # Tạo thông điệp tư vấn chi tiết
-    recommendation_text = format_recommendation(symptoms)
+    for item in detected:
+        code = item["specialty"]["code"]
+        if code not in specialties:
+            specialties[code] = {**item["specialty"], "symptoms_matched": []}
+        specialties[code]["symptoms_matched"].append(item["name"])
 
+    message = (
+        f"Tìm thấy {len(detected)} triệu chứng và {len(specialties)} chuyên khoa phù hợp."
+        if detected
+        else "Không tìm thấy triệu chứng có độ tin cậy đủ cao."
+    )
     return {
-        "symptoms": symptoms,
-        "specialties": specialties,
-        "doctors": doctors_with_specialists,
-        "message": recommendation_text,
+        "symptoms": detected,
+        "specialties": list(specialties.values()),
+        "message": message,
     }
 
 
-# ── Test chạy thử ──────────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    print("Loading model...")
     ner = load_ner_pipeline()
-
-    test_cases = [
-        "Tôi bị đau đầu dữ dội và sốt cao từ hôm qua",
-        "Mấy ngày nay tôi bị sổ mũi, hắt hơi và đau họng",
-        "Tim tôi đập nhanh, khó thở và tức ngực",
-        "Tôi bị đau bụng quặn và tiêu chảy liên tục",
-    ]
-
-    print("Nhập 'exit' hoặc 'quit' để dừng chương trình.\n")
-
     while True:
-        # Lấy dữ liệu nhập vào từ bàn phím
-        text = input("Nhập văn bản của bạn: ").strip()
-        
-        # Kiểm tra điều kiện để thoát vòng lặp
-        if text.lower() in ['exit', 'quit', '']:
-            print("Đã thoát chương trình.")
+        text = input("Nhap van ban cua ban (exit de dung): ").strip()
+        if text.lower() in {"exit", "quit", ""}:
             break
-            
-        print(f"\n{'='*60}")
-        print(f"Input : {text}")
-        
-        # Dự đoán và in kết quả
-        result = predict(text, ner)
-        print(f"Trieu chung: {result['symptoms']}")
-        print()
-        print(result["message"])
-        print(f"={''*60}\n")
+        print(predict(text, ner))

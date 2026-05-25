@@ -1,22 +1,19 @@
-"""
-model_api.py
-FastAPI server để chạy model NER
-"""
+"""FastAPI service for extracting symptoms and their specialty labels."""
 
-from fastapi import FastAPI, HTTPException # type: ignore
-from fastapi.middleware.cors import CORSMiddleware # type: ignore
-from pydantic import BaseModel # type: ignore
 import os
-from transformers import pipeline  # type: ignore
-from symptom_mapping import map_symptoms_to_doctors, get_doctors_for_specialty, SPECIALTY_INFO
 
-# ─ Cấu hình ─────────────────────────────────────────────────────────
+from fastapi import FastAPI, HTTPException  # type: ignore
+from fastapi.middleware.cors import CORSMiddleware  # type: ignore
+from pydantic import BaseModel  # type: ignore
+from transformers import pipeline  # type: ignore
+
+from inference import extract_specialty_symptoms
+
+
 MODEL_PATH = "./output/medical-ner-model"
 PORT = 5555
 
-app = FastAPI(title="Medical NER Model API")
-
-# CORS - cho phép NestJS gọi từ localhost
+app = FastAPI(title="Medical Specialty NER API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://localhost:3001"],
@@ -25,154 +22,101 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load model vào memory
 ner_pipeline = None
 
 
-class DoctorInfo(BaseModel):
-    """Thông tin bác sĩ"""
-    name: str
-    experience: str
-    phone: str
-    rating: float
-
-
-class DoctorRecommendation(BaseModel):
-    """Khuyến cáo bác sĩ theo chuyên khoa"""
-    specialty: str
-    icon: str
-    description: str
-    symptoms_matched: list[str]
-    doctors: list[DoctorInfo]
-
-
 class SymptomRequest(BaseModel):
-    """Request body"""
     text: str
 
 
+class DetectedSymptom(BaseModel):
+    name: str
+    confidence: float
+    specialty_code: str
+    specialty_name: str
+    specialty_slug: str
+
+
+class SpecialtyRecommendation(BaseModel):
+    code: str
+    name: str
+    slug: str
+    symptoms_matched: list[str]
+
+
 class SymptomResponse(BaseModel):
-    """Response body"""
-    symptoms: list[str]
-    confidence_scores: list[float]
+    symptoms: list[DetectedSymptom]
+    specialties: list[SpecialtyRecommendation]
     message: str
-    doctors: list[DoctorRecommendation]
 
 
 @app.on_event("startup")
 async def load_model():
-    """Load model khi server khởi động"""
+    """Load the NER model once when the AI service starts."""
     global ner_pipeline
     if not os.path.exists(MODEL_PATH):
-        print(f"❌ Model không tìm thấy: {MODEL_PATH}")
+        print(f"Model khong tim thay: {MODEL_PATH}")
         return
-    
     try:
-        print(f"📦 Loading model từ {MODEL_PATH}...")
         ner_pipeline = pipeline(
             "ner",
             model=MODEL_PATH,
             tokenizer=MODEL_PATH,
             aggregation_strategy="simple",
         )
-        print("✓ Model loaded thành công!")
-    except Exception as e:
-        print(f"❌ Lỗi load model: {e}")
+        print(f"Model da load: {MODEL_PATH}")
+    except Exception as error:
+        print(f"Loi load model: {error}")
 
 
 @app.get("/health")
 async def health_check():
-    """Kiểm tra health"""
-    return {
-        "status": "ok",
-        "model_loaded": ner_pipeline is not None,
-    }
+    return {"status": "ok", "model_loaded": ner_pipeline is not None}
 
 
 @app.post("/api/extract-symptoms", response_model=SymptomResponse)
 async def extract_symptoms(request: SymptomRequest):
-    """
-    Trích xuất triệu chứng từ văn bản + gợi ý bác sĩ
-    
-    Example:
-        POST /api/extract-symptoms
-        {
-            "text": "Tôi bị ho có đờm và sốt cao"
-        }
-    """
     if not ner_pipeline:
-        raise HTTPException(status_code=500, detail="Model chưa load")
-    
-    if not request.text or len(request.text.strip()) == 0:
-        raise HTTPException(status_code=400, detail="Text không được trống")
-    
-    try:
-        # Gọi model
-        entities = ner_pipeline(request.text)
-        
-        symptoms = []
-        scores = []
-        
-        for ent in entities:
-            if ent["entity_group"] == "SYMPTOM":
-                symptoms.append(ent["word"].strip())
-                scores.append(float(ent["score"]))
-        
-        # Map symptoms to doctors/specialties
-        specialties_map = map_symptoms_to_doctors(symptoms)
-        
-        # Build doctor recommendations
-        doctors_recommendations = []
-        for specialty, symptoms_list in specialties_map.items():
-            spec_info = SPECIALTY_INFO.get(specialty, {})
-            doctors_list = get_doctors_for_specialty(specialty)
-            
-            # Convert doctors dict to DoctorInfo objects
-            doctor_infos = [
-                DoctorInfo(
-                    name=doc["name"],
-                    experience=doc["experience"],
-                    phone=doc["phone"],
-                    rating=doc["rating"]
-                )
-                for doc in doctors_list
-            ]
-            
-            doctors_recommendations.append(
-                DoctorRecommendation(
-                    specialty=specialty,
-                    icon=spec_info.get("icon", "🏥"),
-                    description=spec_info.get("description", ""),
-                    symptoms_matched=symptoms_list,
-                    doctors=doctor_infos
-                )
+        raise HTTPException(status_code=503, detail="Model chua load")
+    if not request.text.strip():
+        raise HTTPException(status_code=400, detail="Text khong duoc trong")
+
+    detected = extract_specialty_symptoms(request.text, ner_pipeline)
+    symptoms = [
+        DetectedSymptom(
+            name=item["name"],
+            confidence=item["confidence"],
+            specialty_code=item["specialty"]["code"],
+            specialty_name=item["specialty"]["name"],
+            specialty_slug=item["specialty"]["slug"],
+        )
+        for item in detected
+    ]
+
+    grouped: dict[str, SpecialtyRecommendation] = {}
+    for symptom in symptoms:
+        if symptom.specialty_code not in grouped:
+            grouped[symptom.specialty_code] = SpecialtyRecommendation(
+                code=symptom.specialty_code,
+                name=symptom.specialty_name,
+                slug=symptom.specialty_slug,
+                symptoms_matched=[],
             )
-        
-        message = (
-            f"Tìm thấy {len(symptoms)} triệu chứng"
-            if symptoms
-            else "Không tìm thấy triệu chứng nào"
-        )
-        
-        return SymptomResponse(
-            symptoms=symptoms,
-            confidence_scores=scores,
-            message=message,
-            doctors=doctors_recommendations,
-        )
-    
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        grouped[symptom.specialty_code].symptoms_matched.append(symptom.name)
+
+    message = (
+        f"Tìm thấy {len(symptoms)} triệu chứng và {len(grouped)} chuyên khoa phù hợp."
+        if symptoms
+        else "Không tìm thấy triệu chứng có độ tin cậy đủ cao."
+    )
+    return SymptomResponse(
+        symptoms=symptoms,
+        specialties=list(grouped.values()),
+        message=message,
+    )
 
 
 if __name__ == "__main__":
-    import uvicorn # type: ignore
-    print("\n" + "="*70)
-    print("🚀 Medical NER Model API")
-    print("="*70)
-    print(f"Server chạy tại: http://localhost:{PORT}")
-    print(f"Health check: http://localhost:{PORT}/health")
-    print(f"API docs: http://localhost:{PORT}/docs")
-    print("="*70 + "\n")
-    
-    uvicorn.run(app, host="0.0.0.0", port=PORT) 
+    import uvicorn  # type: ignore
+
+    uvicorn.run(app, host="0.0.0.0", port=PORT)
